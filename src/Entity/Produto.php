@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProdutoRepository")
  */
-class Produto
+class Produto implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -526,5 +526,47 @@ class Produto
         }
 
         return $this;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id'    => $this->getId(),
+            'unidade_id' => $this->getUnidade(),
+            'categoria_id' => $this->getCategoria(),
+            'sub_categoria_id' => $this->getSubCategoria(),
+            'marca_id' => $this->getMarca(),
+            'ean' => $this->getEan(),
+            'descricao' => $this->getDescricao(),
+            'tipo_item' => $this->getTipoItem(),
+            'modelo' => $this->getModelo(),
+            'tags' => $this->getTags(),
+            'cod_balanca' => $this->getCodBalanca(),
+            'cod_interno' => $this->getCodInterno(),
+            'status' => $this->getStatus(),
+            'preco_custo' => $this->getPrecoCusto(),
+            'preco_varejo' => $this->getPrecoAtacado(),
+            'preco_atacado' => $this->getPrecoVarejo(),
+            'qnt_atacado' => $this->getQntAtacado(),
+            'mov_estoque' => $this->getMovEstoque(),
+            'tip_estoque' => $this->getTipEstoque(),
+            'tipo_produto' => $this->getTipoProduto(),
+            'ncm' => $this->getNcm(),
+            'origem' => $this->getOrigem(),
+            'cest' => $this->getCest(),
+            'categoria_pdv' => $this->getCategoriaPDV(),
+            'rotulo_pdv' => $this->getRotuloPDV(),
+            'tags_pdv' => $this->getTagsPDV()
+        ];
+
+
+
     }
 }

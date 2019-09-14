@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable as JsonSerializableAlias;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SubCategoriaRepository")
  */
-class SubCategoria
+class SubCategoria implements JsonSerializableAlias
 {
     /**
      * @ORM\Id
@@ -68,16 +69,18 @@ class SubCategoria
         return $this;
     }
 
-    public function removeProduto(Produto $produto): self
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
     {
-        if ($this->produtos->contains($produto)) {
-            $this->produtos->removeElement($produto);
-            // set the owning side to null (unless already changed)
-            if ($produto->getSubCategoria() === $this) {
-                $produto->setSubCategoria(null);
-            }
-        }
-
-        return $this;
+        return [
+            'id'    => $this->getId(),
+            'subCategoria' => $this->getSubCategoria()
+        ];
     }
 }

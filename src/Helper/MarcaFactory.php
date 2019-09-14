@@ -6,7 +6,7 @@ use App\Entity\Marca;
 
 class MarcaFactory
 {
-    public function criarMarca(string $json): Marca
+ /*   public function criarMarca(string $json): Marca
     {
         $dadoEmJson = json_decode($json);
 
@@ -15,4 +15,5 @@ class MarcaFactory
 
         return $marca;
     }
+ */
 }
