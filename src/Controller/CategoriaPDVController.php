@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Marca;
-use App\Repository\MarcaRepository;
+use App\Entity\CategoriaPDV;
+use App\Repository\CategoriaPDVRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class MarcaController extends AbstractController
+class CategoriaPDVController extends AbstractController
 {
     /**
      * @var EntityManagerInterface
@@ -20,20 +20,20 @@ class MarcaController extends AbstractController
     private $entityManager;
 
     /**
-     * @var MarcaRepository
+     * @var CategoriaPDVRepository
      */
     private $repository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        MarcaRepository $repository
+        CategoriaPDVRepository $repository
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
     }
 
     /**
-     * @Route("/marca", methods={"POST"})
+     * @Route("/categoriaPDV", methods={"POST"})
      */
     public function nova(Request $request): Response
     {
@@ -41,23 +41,23 @@ class MarcaController extends AbstractController
         $dadosEmJson = json_decode($dadosRequest);
         if (is_integer($dadosEmJson->codigo) and
             $dadosEmJson->codigo >= 1 ){
-            $marca = $this->repository->find($dadosEmJson->codigo);
+            $categoriaPDV = $this->repository->find($dadosEmJson->codigo);
         }
         //Cria novo
-        if (empty($marca)){
-            $marca = new Marca();
-            $this->entityManager->persist($marca);
+        if (empty($categoriaPDV)){
+            $categoriaPDV = new CategoriaPDV();
+            $this->entityManager->persist($categoriaPDV);
         }
 
-        $marca->setMarca($dadosEmJson->marca);
+        $categoriaPDV->setDescricao($dadosEmJson->categoria);
 
         $this->entityManager->flush();
-        return new JsonResponse($marca);
+        return new JsonResponse($categoriaPDV);
     }
 
 
     /**
-     * @Route("/marca", methods={"GET"})
+     * @Route("/categoriaPDV", methods={"GET"})
      */
     public function listar(): Response
     {

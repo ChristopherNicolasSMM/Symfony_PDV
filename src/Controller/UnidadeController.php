@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Marca;
-use App\Repository\MarcaRepository;
+use App\Entity\Unidade;
+use App\Repository\UnidadeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class MarcaController extends AbstractController
+class UnidadeController extends AbstractController
 {
     /**
      * @var EntityManagerInterface
@@ -20,20 +20,20 @@ class MarcaController extends AbstractController
     private $entityManager;
 
     /**
-     * @var MarcaRepository
+     * @var UnidadeRepository
      */
     private $repository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        MarcaRepository $repository
+        UnidadeRepository $repository
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
     }
 
     /**
-     * @Route("/marca", methods={"POST"})
+     * @Route("/unidade", methods={"POST"})
      */
     public function nova(Request $request): Response
     {
@@ -41,23 +41,24 @@ class MarcaController extends AbstractController
         $dadosEmJson = json_decode($dadosRequest);
         if (is_integer($dadosEmJson->codigo) and
             $dadosEmJson->codigo >= 1 ){
-            $marca = $this->repository->find($dadosEmJson->codigo);
+            $unidade = $this->repository->find($dadosEmJson->codigo);
         }
         //Cria novo
-        if (empty($marca)){
-            $marca = new Marca();
-            $this->entityManager->persist($marca);
+        if (empty($unidade)){
+            $unidade = new Unidade();
+            $this->entityManager->persist($unidade);
         }
 
-        $marca->setMarca($dadosEmJson->marca);
+        $unidade->setUnidadeAbv($dadosEmJson->unidade);
+        $unidade->setDescricao($dadosEmJson->descricao);
 
         $this->entityManager->flush();
-        return new JsonResponse($marca);
+        return new JsonResponse($unidade);
     }
 
 
     /**
-     * @Route("/marca", methods={"GET"})
+     * @Route("/unidade", methods={"GET"})
      */
     public function listar(): Response
     {

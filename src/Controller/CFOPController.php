@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Marca;
-use App\Repository\MarcaRepository;
+use App\Entity\CFOP;
+use App\Repository\CFOPRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class MarcaController extends AbstractController
+class CFOPController extends AbstractController
 {
     /**
      * @var EntityManagerInterface
@@ -20,20 +20,20 @@ class MarcaController extends AbstractController
     private $entityManager;
 
     /**
-     * @var MarcaRepository
+     * @var CFOPRepository
      */
     private $repository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        MarcaRepository $repository
+        CFOPRepository $repository
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
     }
 
     /**
-     * @Route("/marca", methods={"POST"})
+     * @Route("/cfop", methods={"POST"})
      */
     public function nova(Request $request): Response
     {
@@ -41,23 +41,26 @@ class MarcaController extends AbstractController
         $dadosEmJson = json_decode($dadosRequest);
         if (is_integer($dadosEmJson->codigo) and
             $dadosEmJson->codigo >= 1 ){
-            $marca = $this->repository->find($dadosEmJson->codigo);
+            $cfop = $this->repository->find($dadosEmJson->codigo);
         }
         //Cria novo
-        if (empty($marca)){
-            $marca = new Marca();
-            $this->entityManager->persist($marca);
+        if (empty($cfop)){
+            $cfop = new CFOP();
+            $this->entityManager->persist($cfop);
         }
 
-        $marca->setMarca($dadosEmJson->marca);
+        $cfop->setDescricao($dadosEmJson->descricao);
+        $cfop->setCodCfop($dadosEmJson->cfop);
+        $cfop->setNaturezaDeOperacao($dadosEmJson->natureza);
+        $cfop->setPadao($dadosEmJson->padrao);
 
         $this->entityManager->flush();
-        return new JsonResponse($marca);
+        return new JsonResponse($cfop);
     }
 
 
     /**
-     * @Route("/marca", methods={"GET"})
+     * @Route("/cfop", methods={"GET"})
      */
     public function listar(): Response
     {
