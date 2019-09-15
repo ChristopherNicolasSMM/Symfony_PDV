@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Produto;
 use App\Repository\CategoriaPDVRepository;
 use App\Repository\CategoriaRepository;
+use App\Repository\MarcaRepository;
 use App\Repository\ProdutoRepository;
 use App\Repository\SubCategoriaRepository;
 use App\Repository\UnidadeRepository;
@@ -86,17 +87,20 @@ class ProdutoController extends AbstractController
         }
 
         $produto->setUnidade(
-            $this->unidadeRepository->find($dadosEmJson->unidade_id));
+            $this->unidadeRepository->find(
+                $dadosEmJson->unidade_id));
 
         $produto->setCategoria(
             $this->categoriaRepository->find(
                 $dadosEmJson->categoria_id));
 
         $produto->setSubCategoria(
-            $this->subCategoriaRepository($dadosEmJson->sub_categoria_id));
+            $this->subCategoriaRepository->find(
+                $dadosEmJson->sub_categoria_id));
 
         $produto->setMarca(
-            $this->marcaRepository->find($dadosEmJson->marca_id));
+            $this->marcaRepository->find(
+                $dadosEmJson->marca_id));
 
         $produto->setEan($dadosEmJson->ean);
         $produto->setDescricao($dadosEmJson->descricao);
@@ -121,7 +125,7 @@ class ProdutoController extends AbstractController
         $produto->setStatus($dadosEmJson->status);
 
 
-        //$this->entityManager->flush();
+        $this->entityManager->flush();
         return new JsonResponse($produto);
     }
 
