@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CFOP;
 use App\Repository\CFOPRepository;
+use App\Repository\NaturezaDeOperacaoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,12 +25,19 @@ class CFOPController extends AbstractController
      */
     private $repository;
 
+    /**
+     * @var NaturezaDeOperacaoRepository
+     */
+    private $naturezaDeOperacaoRepository;
+
     public function __construct(
         EntityManagerInterface $entityManager,
-        CFOPRepository $repository
+        CFOPRepository $repository,
+        NaturezaDeOperacaoRepository $naturezaDeOperacaoRepository
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
+        $this->naturezaDeOperacaoRepository = $naturezaDeOperacaoRepository;
     }
 
     /**
@@ -51,7 +59,11 @@ class CFOPController extends AbstractController
 
         $cfop->setDescricao($dadosEmJson->descricao);
         $cfop->setCodCfop($dadosEmJson->cfop);
-        $cfop->setNaturezaDeOperacao($dadosEmJson->natureza);
+
+        $cfop->setNaturezaDeOperacao(
+            $this->naturezaDeOperacaoRepository->
+            find($dadosEmJson->natureza));
+
         $cfop->setPadao($dadosEmJson->padrao);
 
         $this->entityManager->flush();
