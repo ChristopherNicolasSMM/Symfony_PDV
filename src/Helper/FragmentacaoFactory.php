@@ -4,7 +4,11 @@
 namespace App\Helper;
 
 
-class FragmentacaoFactory
+class FragmentacaoFactory implements EntidadeFactoryInterface
 {
 
+    public function criarEntidade(string $json)
+    {
+        // TODO: Implement criarEntidade() method.
+    }
 }

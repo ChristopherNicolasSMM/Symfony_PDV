@@ -4,7 +4,11 @@
 namespace App\Helper;
 
 
-class MarcaFactory
+class MarcaFactory implements EntidadeFactoryInterface
 {
 
+    public function criarEntidade(string $json)
+    {
+        // TODO: Implement criarEntidade() method.
+    }
 }
