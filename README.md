@@ -1,1 +1,2 @@
-# Symfony_PDV
+# Projeto de PDV com Symfony & Doctrine
+
