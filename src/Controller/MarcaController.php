@@ -48,13 +48,4 @@ class MarcaController extends BaseController
         return new JsonResponse($marca);
     }
 
-
-    /**
-     * @Route("/marca", methods={"GET"})
-     */
-    public function listar(): Response
-    {
-        return new JsonResponse($this->repository->findAll());
-    }
-
 }

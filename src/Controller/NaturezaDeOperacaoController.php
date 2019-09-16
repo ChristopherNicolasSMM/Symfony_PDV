@@ -54,13 +54,4 @@ class NaturezaDeOperacaoController extends BaseController
         return new JsonResponse($naturezaDeOperacao);
     }
 
-
-    /**
-     * @Route("/naturezaDeOperacao", methods={"GET"})
-     */
-    public function listar(): Response
-    {
-        return new JsonResponse($this->repository->findAll());
-    }
-
 }
