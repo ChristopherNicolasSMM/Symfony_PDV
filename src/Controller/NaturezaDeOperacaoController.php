@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\NaturezaDeOperacao;
+use App\Helper\ExtratorDadosRequest;
+use App\Helper\NaturezaDeOperacaoFactory;
 use App\Repository\NaturezaDeOperacaoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,23 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NaturezaDeOperacaoController extends BaseController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     public function __construct(
         EntityManagerInterface $entityManager,
-        NaturezaDeOperacaoRepository $repository
+        NaturezaDeOperacaoRepository $repository,
+        NaturezaDeOperacaoFactory $factory
+        //ExtratorDadosRequest $extratorDadosRequest
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
     }
 
     /**
      * @Route("/naturezaDeOperacao", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

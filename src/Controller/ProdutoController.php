@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Produto;
+use App\Helper\ExtratorDadosRequest;
+use App\Helper\ProdutoFactory;
 use App\Repository\CategoriaPDVRepository;
 use App\Repository\CategoriaRepository;
 use App\Repository\MarcaRepository;
@@ -19,10 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProdutoController extends BaseController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
     /**
      * @var UnidadeRepository
      */
@@ -48,15 +46,16 @@ class ProdutoController extends BaseController
     public function __construct(
         EntityManagerInterface $entityManager,
         ProdutoRepository $repository,
+        ProdutoFactory $factory,
         UnidadeRepository $unidadeRepository,
         CategoriaRepository $categoriaRepository,
         CategoriaPDVRepository $categoriaPDVRepository,
         SubCategoriaRepository $subCategoriaRepository,
-        MarcaRepository $marcaRepository
+        MarcaRepository $marcaRepository//,
+        //ExtratorDadosRequest $extratorDadosRequest
 
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
         $this->unidadeRepository = $unidadeRepository;
         $this->categoriaRepository = $categoriaRepository;
         $this->categoriaPDVRepository = $categoriaPDVRepository;
@@ -67,7 +66,7 @@ class ProdutoController extends BaseController
     /**
      * @Route("/produto", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

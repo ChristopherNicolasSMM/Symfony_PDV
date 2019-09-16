@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Composicao;
+use App\Helper\ComposicaoFactory;
+use App\Helper\ExtratorDadosRequest;
 use App\Repository\ComposicaoRepository;
 use App\Repository\ProdutoRepository;
 use App\Repository\UnidadeRepository;
@@ -16,10 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ComposicaoController extends BaseController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
      * @var ProdutoRepository
      */
     private $produtoRepository;
@@ -31,12 +29,13 @@ class ComposicaoController extends BaseController
     public function __construct(
         EntityManagerInterface $entityManager,
         ComposicaoRepository $repository,
+        ComposicaoFactory $factory,
         ProdutoRepository $produtoRepository,
-        UnidadeRepository $unidadeRepository
+        UnidadeRepository $unidadeRepository//,
+        //ExtratorDadosRequest $extratorDadosRequest
 
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
         $this->produtoRepository = $produtoRepository;
         $this->unidadeRepository = $unidadeRepository;
     }
@@ -44,7 +43,7 @@ class ComposicaoController extends BaseController
     /**
      * @Route("/composicao", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

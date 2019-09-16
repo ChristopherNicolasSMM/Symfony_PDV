@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\CFOP;
+use App\Helper\CFOPFactory;
+use App\Helper\ExtratorDadosRequest;
 use App\Repository\CFOPRepository;
 use App\Repository\NaturezaDeOperacaoRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class CFOPController extends BaseController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * @var NaturezaDeOperacaoRepository
      */
     private $naturezaDeOperacaoRepository;
@@ -28,17 +24,18 @@ class CFOPController extends BaseController
     public function __construct(
         EntityManagerInterface $entityManager,
         CFOPRepository $repository,
+        CFOPFactory $factory,
         NaturezaDeOperacaoRepository $naturezaDeOperacaoRepository
+       // ExtratorDadosRequest $extratorDadosRequest
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
         $this->naturezaDeOperacaoRepository = $naturezaDeOperacaoRepository;
     }
 
     /**
      * @Route("/cfop", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

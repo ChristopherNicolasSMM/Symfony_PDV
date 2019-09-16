@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Fragmentacao;
+use App\Helper\ExtratorDadosRequest;
+use App\Helper\FragmentacaoFactory;
 use App\Repository\FragmentacaoRepository;
 use App\Repository\ProdutoRepository;
 use App\Repository\UnidadeRepository;
@@ -17,10 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class FragmentacaoController extends BaseController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
      * @var ProdutoRepository
      */
     private $produtoRepository;
@@ -32,12 +30,13 @@ class FragmentacaoController extends BaseController
     public function __construct(
         EntityManagerInterface $entityManager,
         FragmentacaoRepository $repository,
+        FragmentacaoFactory $factory,
         ProdutoRepository $produtoRepository,
-        UnidadeRepository $unidadeRepository
+        UnidadeRepository $unidadeRepository//,
+        //ExtratorDadosRequest $extratorDadosRequest
 
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
         $this->produtoRepository = $produtoRepository;
         $this->unidadeRepository = $unidadeRepository;
     }
@@ -45,7 +44,7 @@ class FragmentacaoController extends BaseController
     /**
      * @Route("/fragmentacao", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\SubCategoria;
+use App\Helper\ExtratorDadosRequest;
+use App\Helper\SubCategoriaFactory;
 use App\Repository\SubCategoriaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,23 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SubCategoriaController extends BaseController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     public function __construct(
         EntityManagerInterface $entityManager,
-        SubCategoriaRepository $repository
+        SubCategoriaRepository $repository,
+        SubCategoriaFactory $factory
+        //ExtratorDadosRequest $extratorDadosRequest
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
     }
 
     /**
      * @Route("/subCategoria", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

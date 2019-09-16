@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Marca;
+use App\Helper\ExtratorDadosRequest;
+use App\Helper\MarcaFactory;
 use App\Repository\MarcaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,23 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MarcaController extends BaseController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     public function __construct(
         EntityManagerInterface $entityManager,
-        MarcaRepository $repository
+        MarcaRepository $repository,
+        MarcaFactory $factory
+        //ExtratorDadosRequest $extratorDadosRequest
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
     }
 
     /**
      * @Route("/marca", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

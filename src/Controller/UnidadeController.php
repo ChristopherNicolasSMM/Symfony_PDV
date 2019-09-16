@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Unidade;
+use App\Helper\ExtratorDadosRequest;
+use App\Helper\UnidadeFactory;
 use App\Repository\UnidadeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,23 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UnidadeController extends BaseController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     public function __construct(
         EntityManagerInterface $entityManager,
-        UnidadeRepository $repository
+        UnidadeRepository $repository,
+        UnidadeFactory $factory
+        //ExtratorDadosRequest $extratorDadosRequest
     ) {
-        parent::__construct($repository);
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $repository, $factory);
     }
 
     /**
      * @Route("/unidade", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);

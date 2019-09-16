@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\CategoriaPDV;
+use App\Helper\CategoriaPDVFactory;
+use App\Helper\ExtratorDadosRequest;
 use App\Repository\CategoriaPDVRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,23 +16,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoriaPDVController extends BaseController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     public function __construct(
     EntityManagerInterface $entityManager,
-    CategoriaPDVRepository $repository
-) {
-    parent::__construct($repository);
-    $this->entityManager = $entityManager;
-}
+    CategoriaPDVRepository $repository,
+    CategoriaPDVFactory $factory
+    //ExtratorDadosRequest $extratorDadosRequest
+    )
+    {
+        parent::__construct($entityManager, $repository, $factory);
+    }
 
     /**
      * @Route("/categoriaPDV", methods={"POST"})
      */
-    public function nova(Request $request): Response
+    public function salva(Request $request): Response
     {
         $dadosRequest = $request->getContent();
         $dadosEmJson = json_decode($dadosRequest);
