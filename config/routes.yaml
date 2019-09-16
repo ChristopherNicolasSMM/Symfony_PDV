@@ -1,3 +1,62 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+categoria:
+  path: /categoria
+  controller: App\Controller\CategoriaController::listar
+  methods:
+    - GET
+
+categoriaPDV:
+  path: /categoriaPDV
+  controller: App\Controller\CategoriaPDVController::listar
+  methods:
+    - GET
+
+CFOP:
+  path: /cfop
+  controller: App\Controller\CFOPController::listar
+  methods:
+    - GET
+
+composicao:
+  path: /composicao
+  controller: App\Controller\ComposicaoController::listar
+  methods:
+    - GET
+
+fragmentacao:
+  path: /fragmentacao
+  controller: App\Controller\FragmentacaoController::listar
+  methods:
+    - GET
+
+marca:
+  path: /marca
+  controller: App\Controller\MarcaController::listar
+  methods:
+    - GET
+
+naturezaDeOperacao:
+  path: /naturezaDeOperacao
+  controller: App\Controller\NaturezaDeOperacaoController::listar
+  methods:
+    - GET
+
+produto:
+  path: /produto
+  controller: App\Controller\ProdutoController::listar
+  methods:
+    - GET
+
+subCategoria:
+  path: /subCategoria
+  controller: App\Controller\SubCategoriaController::listar
+  methods:
+    - GET
+
+unidade:
+  path: /unidade
+  controller: App\Controller\UnidadeController::listar
+  methods:
+    - GET

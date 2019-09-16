@@ -12,24 +12,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class SubCategoriaController extends AbstractController
+class SubCategoriaController extends BaseController
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
 
-    /**
-     * @var SubCategoriaRepository
-     */
-    private $repository;
-
     public function __construct(
         EntityManagerInterface $entityManager,
         SubCategoriaRepository $repository
     ) {
+        parent::__construct($repository);
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
     }
 
     /**
@@ -54,14 +49,4 @@ class SubCategoriaController extends AbstractController
         $this->entityManager->flush();
         return new JsonResponse($subCategoria);
     }
-
-
-    /**
-     * @Route("/subCategoria", methods={"GET"})
-     */
-    public function listar(): Response
-    {
-        return new JsonResponse($this->repository->findAll());
-    }
-
 }

@@ -14,16 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class FragmentacaoController extends AbstractController
+class FragmentacaoController extends BaseController
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
-    /**
-     * @var FragmentacaoRepository
-     */
-    private $repository;
     /**
      * @var ProdutoRepository
      */
@@ -40,8 +36,8 @@ class FragmentacaoController extends AbstractController
         UnidadeRepository $unidadeRepository
 
     ) {
+        parent::__construct($repository);
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
         $this->produtoRepository = $produtoRepository;
         $this->unidadeRepository = $unidadeRepository;
     }
@@ -74,14 +70,4 @@ class FragmentacaoController extends AbstractController
         $this->entityManager->flush();
         return new JsonResponse($fragmentacao);
     }
-
-
-    /**
-     * @Route("/fragmentacao", methods={"GET"})
-     */
-    public function listar(): Response
-    {
-        return new JsonResponse($this->repository->findAll());
-    }
-
 }

@@ -13,17 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class CFOPController extends AbstractController
+class CFOPController extends BaseController
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * @var CFOPRepository
-     */
-    private $repository;
 
     /**
      * @var NaturezaDeOperacaoRepository
@@ -35,8 +30,8 @@ class CFOPController extends AbstractController
         CFOPRepository $repository,
         NaturezaDeOperacaoRepository $naturezaDeOperacaoRepository
     ) {
+        parent::__construct($repository);
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
         $this->naturezaDeOperacaoRepository = $naturezaDeOperacaoRepository;
     }
 
@@ -68,15 +63,6 @@ class CFOPController extends AbstractController
 
         $this->entityManager->flush();
         return new JsonResponse($cfop);
-    }
-
-
-    /**
-     * @Route("/cfop", methods={"GET"})
-     */
-    public function listar(): Response
-    {
-        return new JsonResponse($this->repository->findAll());
     }
 
 }

@@ -12,24 +12,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class MarcaController extends AbstractController
+class MarcaController extends BaseController
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
 
-    /**
-     * @var MarcaRepository
-     */
-    private $repository;
-
     public function __construct(
         EntityManagerInterface $entityManager,
         MarcaRepository $repository
     ) {
+        parent::__construct($repository);
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
     }
 
     /**

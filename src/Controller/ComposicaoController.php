@@ -7,24 +7,18 @@ use App\Repository\ComposicaoRepository;
 use App\Repository\ProdutoRepository;
 use App\Repository\UnidadeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class ComposicaoController extends AbstractController
+class ComposicaoController extends BaseController
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * @var ComposicaoRepository
-     */
-    private $repository;
     /**
      * @var ProdutoRepository
      */
@@ -41,8 +35,8 @@ class ComposicaoController extends AbstractController
         UnidadeRepository $unidadeRepository
 
     ) {
+        parent::__construct($repository);
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
         $this->produtoRepository = $produtoRepository;
         $this->unidadeRepository = $unidadeRepository;
     }
@@ -78,14 +72,4 @@ class ComposicaoController extends AbstractController
         $this->entityManager->flush();
         return new JsonResponse($composicao);
     }
-
-
-    /**
-     * @Route("/composicao", methods={"GET"})
-     */
-    public function listar(): Response
-    {
-        return new JsonResponse($this->repository->findAll());
-    }
-
 }

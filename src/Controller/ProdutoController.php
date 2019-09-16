@@ -17,17 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class ProdutoController extends AbstractController
+class ProdutoController extends BaseController
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * @var ProdutoRepository
-     */
-    private $repository;
     /**
      * @var UnidadeRepository
      */
@@ -60,8 +55,8 @@ class ProdutoController extends AbstractController
         MarcaRepository $marcaRepository
 
     ) {
+        parent::__construct($repository);
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
         $this->unidadeRepository = $unidadeRepository;
         $this->categoriaRepository = $categoriaRepository;
         $this->categoriaPDVRepository = $categoriaPDVRepository;
@@ -124,18 +119,7 @@ class ProdutoController extends AbstractController
         $produto->setTagsPDV($dadosEmJson->tags_pdv);
         $produto->setStatus($dadosEmJson->status);
 
-
         $this->entityManager->flush();
         return new JsonResponse($produto);
     }
-
-
-    /**
-     * @Route("/produto", methods={"GET"})
-     */
-    public function listar(): Response
-    {
-        return new JsonResponse($this->repository->findAll());
-    }
-
 }

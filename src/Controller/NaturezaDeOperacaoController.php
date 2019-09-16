@@ -12,24 +12,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class NaturezaDeOperacaoController extends AbstractController
+class NaturezaDeOperacaoController extends BaseController
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
 
-    /**
-     * @var NaturezaDeOperacaoRepository
-     */
-    private $repository;
-
     public function __construct(
         EntityManagerInterface $entityManager,
         NaturezaDeOperacaoRepository $repository
     ) {
+        parent::__construct($repository);
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
     }
 
     /**
