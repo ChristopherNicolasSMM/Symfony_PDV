@@ -53,9 +53,20 @@ abstract class BaseController extends AbstractController
 
     public function listar(Request $request): Response
     {
+        if (is_null($request->get('filter'))){
+            $filtro = [];
+        }else{
+            $filtro = $request->get('filter');
+        }
+
         return new JsonResponse($this->repository->findBy(
-            [],
-            $request->get('sort')
+            $filtro,
+            $request->get('sort'),
+            $request->get('limit'),
+            //quantidade a retornar é a exibição * o limite
+            // o ponto do -1 na page é para que posso iniciar em pagina 1 na url
+            // no lugar de iniciar com pagina 0 sendo mais amigavel
+            (($request->get('page') -1 ) * $request->get('limit'))
         ));
     }
 
